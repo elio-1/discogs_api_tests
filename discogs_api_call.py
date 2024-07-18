@@ -32,13 +32,20 @@ results = d.search(search_input, type="release")
 artists = results[0].credits
 # list of dict containing every artist with  more info (same order as result[0].credits)
 credits_detailed = results[0].data["extraartists"]
+#exemple credits_detailed[0]['role'] return Bass 
+
 year = results[0].year
 genre = results[0].genres
 style = results[0].styles
 # since there can sometime be more than one video and the first one isnt always the official one. since its discogs its usually vinyl v but hey
 video_url_link = results[0].data["videos"][0]['uri']
 
-
+print(artists + " //  " + year + " " + genre + " " + style +" // "+ video_url_link)
 # genre = song["genre"]
 # # extraatists is weird but we should get the arranger or somoething cool
 # arrangedby = song["extraartists"][0]['name']
+
+
+## curl "https://api.discogs.com/database/search?q=earth+wind+fire+september" -H "Authorization: Discogs token=TOKEN"
+## /database/search?q={query}&{?type,title,release_title,credit,artist,anv,label,genre,style,country,year,format,catno,barcode,track,submitter,contributor}
+## curl "https://api.discogs.com/database/search?q=earth+wind+fire+september&type=release" -H "Authorization: Discogs token=TOKEN"
