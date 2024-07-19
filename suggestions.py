@@ -1,22 +1,43 @@
-import discog_api
-import pytube 
+import os
+from dotenv import load_dotenv
+import discogs_client
+import re
 
-def request_licked_video(url):
-    return [discog_api.request_credits(pytube.title(url))]
+def load_api_key():
+    load_dotenv()
+    return os.getenv("DISCOGS_SECRET_KEY")
 
-def random_suggestion(list, how_many_you_want):
-    suggestions = []
-    while true:
-        suggestions.Add(Random(list))
-        if suggestions.count > how_many_you_want:
-            break
-    return [suggestions]
 
-def get_suggestion(url):
-    return random_suggestion(request_licked_video(url))
-
-def visual_page(new_video):
-    history = []
-    render(history.add(new_video))
+def get_suggestions(search_input, how_many=3):
+    search_input = search_input.lower()
+    d = discogs_client.Client('my_user_agent/1.0', user_token=load_api_key())
+    results = d.search(search_input, type="release")
+    artists = results[0].credits
+    if artists:
+        print(artists)
+        i = 1
+        while True:
+            tmp_artist = artists[-i].name.lower().split()
+            pattern = fr"\b(?:{tmp_artist[0]})|(?:{tmp_artist[1]})\b"
+            print(tmp_artist)
+            print(pattern)
+            print(search_input)
+            if not re.search(pattern, search_input):
+                break
+            if i > len(artists):
+                break
+            i += 1
+            print(i)
+        print("searching for: " + artists[-i].name)
+        results2 = d.search(artists[-i].name, type="release")
+        suggestions = [results2[i].title for i in list(range(how_many))]
+        print([suggestion for suggestion in suggestions])
+        return suggestions
+    else:
+        raise Exception('no credit found, try to be more specific with the search input.')
     
-    
+def main():
+    get_suggestions(input('search: '), 4)
+
+if __name__ == "__main__":
+    main()
