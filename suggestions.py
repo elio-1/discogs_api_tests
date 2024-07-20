@@ -34,8 +34,4 @@ def get_suggestions(search_input, how_many=3):
     else:
         raise Exception('no credit found, try to be more specific with the search input.')
     
-def main():
-    get_suggestions(input('search: '), 4)
 
-if __name__ == "__main__":
-    main()
