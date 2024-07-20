@@ -1,0 +1,19 @@
+{
+    "manifest_version": 2,
+    "name": "More Youtube Suggestion",
+    "version": "1.0",
+  
+    "description": "Adds more suggestions to youtube using discogs api",
+  
+    "icons": {
+      "48": "icons/border-1.png"
+    },
+  
+    "content_scripts": [
+      {
+        "matches": ["*://*.youtube.com/*"],
+        "py": ["main.py"]
+      }
+    ]
+  }
+  
